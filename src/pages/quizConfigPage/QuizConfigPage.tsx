@@ -9,7 +9,7 @@ export const QuizConfigPage: React.FC = () => {
     }
   return (
     <>
-        <ButtonSecondary styles={'w-56 h-12 mx-auto absolute top-5 right-5'} onClick={handleViewStats} label="See My Stats"/>
+        <ButtonSecondary styles='w-56 h-12 mx-auto absolute top-5 right-5' onClick={handleViewStats} label="See My Stats"/>
         <QuizForm/>
     </>
   )
