@@ -70,13 +70,6 @@ export const QuizQuestionPage: React.FC = () => {
     const [selectedAnswer, setSelectedAnswer] = useState<string[]>([]);
     const [quizTime, setQuizTime] = useState(120);
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-          setQuizTime((prevTime) => prevTime - 1);
-        }, 1000);
-    
-        return () => clearInterval(timer);
-      }, []);
     const currentQuestion = quizQuestions[currentQuestionIndex];
 
     const handleNextQuestion = () => {
