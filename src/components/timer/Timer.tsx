@@ -25,7 +25,7 @@ const Timer: React.FC<TimerProps> = ({ time }) => {
     return num.toString().padStart(2, '0');
   };
 
-  return <div className='text-amber-500 absolute top-8 right-8'>Time: {formattedTime}</div>;
+  return <div className='text-amber-500 absolute top-8 right-8 w-32 text-left text-xl'>Time: <span className='w-16'> {formattedTime}</span></div>;
 };
 
 export default Timer;
