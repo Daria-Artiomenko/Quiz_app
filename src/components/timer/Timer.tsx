@@ -30,22 +30,3 @@ const Timer: React.FC<TimerProps> = ({ time }) => {
 
 export default Timer;
 
-// const Timer: React.FC<TimerProps> = ({ time }) => {
-//   useEffect(() => {
-//     const timer = setInterval(() => {
-//       // 
-//     }, 1000);
-
-//     return () => clearInterval(timer);
-//   }, []);
-
-//   const formatTime = (timeInSeconds: number) => {
-//     const minutes = Math.floor(timeInSeconds / 60);
-//     const seconds = timeInSeconds % 60;
-//     return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-//   };
-
-//   return <div className='text-amber-500 absolute top-8 right-8'>Time: {formatTime(time)}</div>;
-// };
-
-// export default Timer;
