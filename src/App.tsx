@@ -1,4 +1,4 @@
-import { QuizConfigPage } from './pages/quizConfigPage/QuizConfigPage'
+// import { QuizConfigPage } from './pages/quizConfigPage/QuizConfigPage'
 import './App.css'
 import { QuizQuestionPage } from './pages/quizQuestionPage/QuizQuestionPage'
 

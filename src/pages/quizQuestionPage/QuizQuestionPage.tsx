@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import ProgressBar from '../../components/progressBar/ProgressBar'
+import Question from '../../components/questions/Questions';
 
 //Mock data
 const quizQuestions = [
@@ -61,19 +62,29 @@ const quizQuestions = [
     },
   ];
 
-export const QuizQuestionPage : React.FC = () => {
+export const QuizQuestionPage: React.FC = () => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [selectedAnswer, setSelectedAnswer] = useState<string[]>([]);
 
-    const handleNextQuestion = () => { 
-        setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-      };
     const currentQuestion = quizQuestions[currentQuestionIndex];
-
-  return (
-    <>
-    <ProgressBar
-        currentIndex={currentQuestionIndex}
-        totalQuestions={quizQuestions.length}/>
-    </>
-  )
+    const handleAnswerSelect = (answer: string) => {
+        setSelectedAnswer([answer]);
+    };
+    return (
+        <>
+            <Question
+                key={currentQuestion.id} 
+                question={currentQuestion.question}
+                category={currentQuestion.category}
+                type={currentQuestion.type as "boolean" | "multiple"}
+                answers={currentQuestion.answers}
+                selectedAnswers={selectedAnswer}
+                onAnswerSelect={handleAnswerSelect}
+            />
+            <ProgressBar
+                currentIndex={currentQuestionIndex}
+                totalQuestions={quizQuestions.length}
+            />
+        </>
+    )
 }

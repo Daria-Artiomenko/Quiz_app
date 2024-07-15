@@ -10,7 +10,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ currentIndex, totalQuestions 
 
   return (
     <div>
-      <div className="h-3 w-80 bg-zinc-300 rounded-full">
+      <div className="h-3 w-80 bg-zinc-300 rounded-full mx-auto">
         <div
           className="h-3 bg-amber-500 rounded-full"
           style={{ width: `${progress}%` }}
