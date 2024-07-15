@@ -1,45 +1,65 @@
 import React from 'react';
 
 interface AnswerOption {
-  option: string;
-  isCorrect: boolean;
+    id: number;
+    text: string;
+    isCorrect: boolean;
 }
 
 interface AnswerOptionsProps {
-  type: 'multiple' | 'boolean';
-  answers: AnswerOption[];
-  selectedAnswers: string[];
-  onAnswerSelect: (answer: string) => void;
+    type: 'multiple' | 'boolean';
+    answers: AnswerOption[];
+    selectedAnswers: string[];
+    onAnswerSelect: (answer: string) => void;
 }
 
 const AnswerOptions: React.FC<AnswerOptionsProps> = ({
-  answers,
-  selectedAnswers,
-  onAnswerSelect,
+    type,
+    answers,
+    selectedAnswers,
+    onAnswerSelect,
 }) => {
-
-const handleCheckboxChange = (answer: string) => {
-    onAnswerSelect(answer);
-  };
+    const handleAnswerSelect = (answer: string) => {
+        onAnswerSelect(answer);
+      };
   
-
-  return (
-    <div className='flex flex-col gap-4 align-start justify-start'>
-      {answers.map((answer) => (
-        <div key={answer.option} className='text-xl font-light text-zinc-400 text-start'>
-          <label>
-            <input 
-                className='mr-2 w-4 h-4 rounded-md'
-                type="checkbox"
-                checked={selectedAnswers.includes(answer.option)}
-                onChange={() => handleCheckboxChange(answer.option)}
-            />
-            {answer.option}
-          </label>
+    return (
+        <div className='flex flex-col gap-4 align-start justify-start'>
+        {type === 'multiple' ? (
+            answers.map((answer) => (
+                <div key={answer.id} className='text-xl font-light text-zinc-400 text-start'>
+                <label>
+                    <input
+                    className='mr-2 w-4 h-4 rounded-md'
+                    type="checkbox"
+                    checked={selectedAnswers.includes(answer.text)}
+                    onChange={() => handleAnswerSelect(answer.text)}
+                    />
+                    {answer.text}
+                </label>
+                </div>
+            ))
+      ) : (
+        <div className='flex flex-col gap-4 align-start justify-start'>
+            {answers.map((answer) => (
+                <div key={answer.id} className='text-xl font-light text-zinc-400 text-start'>
+                    <label>
+                    <input
+                        className='mr-2 w-4 h-4 rounded-md'
+                        type="radio"
+                        name="answer"
+                        value={answer.text}
+                        checked={selectedAnswers.includes(answer.text)}
+                        onChange={() => handleAnswerSelect(answer.text)}
+                    />
+                    {answer.text}
+                    </label>
+                </div>
+            ))}
         </div>
-      ))}
+      )}
     </div>
-  );
+    );
 };
 
 export default AnswerOptions;

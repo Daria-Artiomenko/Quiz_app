@@ -2,7 +2,8 @@ import React from 'react';
 import AnswerOptions from '../answerOptions/AnswerOptions';
 
 interface AnswerOption {
-    option: string;
+    id: number;
+    text: string;
     isCorrect: boolean;
   }
   
@@ -14,8 +15,8 @@ interface AnswerOption {
     selectedAnswers: string[];
     onAnswerSelect: (answer: string) => void;
   }
-
-const Question: React.FC<QuestionProps> = ({
+  
+  const Question: React.FC<QuestionProps> = ({
     question,
     type,
     answers,
@@ -25,14 +26,17 @@ const Question: React.FC<QuestionProps> = ({
     }) => {
 
     return (
-        <div>
-        <div className='text-3xl font-medium text-zinc-200 mb-16'>{question}</div>
-        <AnswerOptions
-            type={type}
-            answers={answers}
-            selectedAnswers={selectedAnswers}
-            onAnswerSelect={onAnswerSelect}
-        />
+        <div className='h-3/4'>
+        <div className='text-3xl font-medium text-zinc-200 mb-16 text-center w-2/3 mx-auto'>{question}</div>
+        <div className='w-2/3 mx-auto'>
+            <AnswerOptions
+                type={type}
+                answers={answers}
+                selectedAnswers={selectedAnswers}
+                onAnswerSelect={onAnswerSelect}
+            />
+        </div>
+
         </div>
     );
 };

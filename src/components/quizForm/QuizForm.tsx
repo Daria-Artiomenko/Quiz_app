@@ -45,7 +45,7 @@ export const QuizForm : React.FC = () => {
     };
   
     return (
-    <div>
+    <div className='w-2/5 mx-auto'>
         <h2 className='text-5xl font-bold text-amber-500 mb-16'>Create your Quiz</h2>
         <NumberInput
             label="Number of Questions"
