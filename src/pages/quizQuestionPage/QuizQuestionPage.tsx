@@ -1,6 +1,8 @@
 import React, { useState} from 'react';
 import ProgressBar from '../../components/progressBar/ProgressBar'
 import Question from '../../components/questions/Questions';
+import ButtonSecondary from '../../components/buttonSecondary/ButtonSecondary';
+import ButtonMain from '../../components/buttonMain/ButtonMain';
 
 //Mock data
 const quizQuestions = [
@@ -70,6 +72,14 @@ export const QuizQuestionPage: React.FC = () => {
     const handleAnswerSelect = (answer: string) => {
         setSelectedAnswer([answer]);
     };
+    const handleNextQuestion = () => {
+        setSelectedAnswer([]);
+        setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+      };
+    
+      const handleEndQuiz = () => {
+        // 
+      };
     return (
         <>
             <Question
@@ -81,6 +91,11 @@ export const QuizQuestionPage: React.FC = () => {
                 selectedAnswers={selectedAnswer}
                 onAnswerSelect={handleAnswerSelect}
             />
+            <div className='flex gap-4 mb-16 justify-center'>
+                <ButtonMain onClick={handleNextQuestion} label="Next"/>
+                <ButtonSecondary onClick={handleEndQuiz} label="End Quiz" styles='w-32 h-12 mt-10'/>
+            </div>
+
             <ProgressBar
                 currentIndex={currentQuestionIndex}
                 totalQuestions={quizQuestions.length}

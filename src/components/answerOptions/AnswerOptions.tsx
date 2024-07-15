@@ -17,7 +17,8 @@ const AnswerOptions: React.FC<AnswerOptionsProps> = ({
   selectedAnswers,
   onAnswerSelect,
 }) => {
-  const handleCheckboxChange = (answer: string) => {
+
+const handleCheckboxChange = (answer: string) => {
     onAnswerSelect(answer);
   };
 
