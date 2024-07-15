@@ -1,8 +1,9 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import ProgressBar from '../../components/progressBar/ProgressBar'
 import Question from '../../components/questions/Questions';
 import ButtonSecondary from '../../components/buttonSecondary/ButtonSecondary';
 import ButtonMain from '../../components/buttonMain/ButtonMain';
+import Timer from '../../components/timer/Timer';
 
 //Mock data
 const quizQuestions = [
@@ -67,21 +68,36 @@ const quizQuestions = [
 export const QuizQuestionPage: React.FC = () => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState<string[]>([]);
+    const [quizTime, setQuizTime] = useState(120);
 
+    useEffect(() => {
+        const timer = setInterval(() => {
+          setQuizTime((prevTime) => prevTime - 1);
+        }, 1000);
+    
+        return () => clearInterval(timer);
+      }, []);
     const currentQuestion = quizQuestions[currentQuestionIndex];
-    const handleAnswerSelect = (answer: string) => {
-        setSelectedAnswer([answer]);
-    };
+
     const handleNextQuestion = () => {
         setSelectedAnswer([]);
         setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
       };
+
+    const handleAnswerSelect = (answer: string) => {
+    setSelectedAnswer((prevSelectedAnswer) =>
+        prevSelectedAnswer.includes(answer)
+        ? prevSelectedAnswer.filter((a) => a !== answer)
+        : [...prevSelectedAnswer, answer]
+    );
+    };
     
       const handleEndQuiz = () => {
         // 
       };
     return (
         <>
+            <Timer time={quizTime} />
             <Question
                 key={currentQuestion.id} 
                 question={currentQuestion.question}

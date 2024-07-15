@@ -25,7 +25,7 @@ const handleCheckboxChange = (answer: string) => {
   return (
     <div className='flex flex-col gap-4 align-start justify-start'>
       {answers.map((answer) => (
-        <div key={answer.option} className='text-xl font-medium text-zinc-400 text-start'>
+        <div key={answer.option} className='text-xl font-light text-zinc-400 text-start'>
           <label>
             <input 
                 className='mr-2 w-4 h-4 rounded-md'
