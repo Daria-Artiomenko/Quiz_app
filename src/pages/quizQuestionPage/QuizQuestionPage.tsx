@@ -29,9 +29,9 @@ const questions = [
   const questionAnswers = [
     { questionId: 1, answerIds: [1, 2, 3, 4] },
     { questionId: 2, answerIds: [5, 6] },
-    { questionId: 3, answerIds: [ 2, 3, 5, 6] },
-    { questionId: 4, answerIds: [5, 6] },
-    { questionId: 5, answerIds: [ 2, 3, 5, 6] },
+    { questionId: 3, answerIds: [7, 8, 9, 10] },
+    { questionId: 4, answerIds: [11, 12] },
+    { questionId: 5, answerIds: [13, 14, 15, 16] },
     { questionId: 6, answerIds: [5, 6] },
   ];
 
