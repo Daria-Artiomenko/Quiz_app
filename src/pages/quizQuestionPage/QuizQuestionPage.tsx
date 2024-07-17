@@ -76,10 +76,13 @@ export const QuizQuestionPage: React.FC = () => {
     : [];
 
     const handleNextQuestion = () => {
+		if (currentQuestionIndex === questions.length - 1) {
+			setIsQuizOver(true);
+		} else {
+			setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+		}
         setSelectedAnswer([]);
-        setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
     };
-    
 
     const handleAnswerSelect = (answer: string) => {
         setSelectedAnswer((prevSelectedAnswer) =>
@@ -118,8 +121,7 @@ export const QuizQuestionPage: React.FC = () => {
                     />
                 </>
             )}
-              {isQuizOver && <QuizResultsPage/>
-            }
+            {isQuizOver && <QuizResultsPage/>}
         </>
     )
 }
