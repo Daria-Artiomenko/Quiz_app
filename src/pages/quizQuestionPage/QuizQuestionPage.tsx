@@ -4,6 +4,7 @@ import Question from '../../components/questions/Questions';
 import ButtonSecondary from '../../components/buttonSecondary/ButtonSecondary';
 import ButtonMain from '../../components/buttonMain/ButtonMain';
 import Timer from '../../components/timer/Timer';
+import { QuizResultsPage } from '../quizResultsPage/QuizResultsPage';
 
 
 // Mock data
@@ -16,31 +17,40 @@ const questions = [
     { id: 6, text: "The Great Pyramid of Giza is located in which country?", type: "boolean", category: "History" },
   ];
   
-  const answers = [
-    { id: 1, text: "Paris", isCorrect: true },
-    { id: 2, text: "London", isCorrect: false },
-    { id: 3, text: "Berlin", isCorrect: false },
-    { id: 4, text: "Minsk", isCorrect: false },
-    { id: 5, text: "Madrid", isCorrect: false },
-    { id: 6, text: "London", isCorrect: true },
-    { id: 7, text: "Berlin", isCorrect: false },
-  ];
-  
-  const questionAnswers = [
-    { questionId: 1, answerIds: [1, 2, 3, 4] },
-    { questionId: 2, answerIds: [5, 6] },
-    { questionId: 3, answerIds: [7, 8, 9, 10] },
-    { questionId: 4, answerIds: [11, 12] },
-    { questionId: 5, answerIds: [13, 14, 15, 16] },
-    { questionId: 6, answerIds: [5, 6] },
-  ];
+const answers = [
+  { id: 1, text: "Paris", isCorrect: true },
+  { id: 2, text: "London", isCorrect: false },
+  { id: 3, text: "Berlin", isCorrect: false },
+  { id: 4, text: "Minsk", isCorrect: false },
+  { id: 5, text: "Madrid", isCorrect: false },
+  { id: 6, text: "London", isCorrect: true },
+  { id: 7, text: "Berlin", isCorrect: false },
+  { id: 8, text: "Minsk", isCorrect: false },
+  { id: 9, text: "Madrid", isCorrect: false },
+  { id: 10, text: "London", isCorrect: true },
+  { id: 11, text: "Berlin", isCorrect: false },
+  { id: 12, text: "Berlin", isCorrect: false },
+  { id: 13, text: "Minsk", isCorrect: false },
+  { id: 14, text: "Madrid", isCorrect: false },
+  { id: 15, text: "London", isCorrect: true },
+  { id: 16, text: "Berlin", isCorrect: false },
+];
+
+const questionAnswers = [
+  { questionId: 1, answerIds: [1, 2, 3, 4] },
+  { questionId: 2, answerIds: [5, 6] },
+  { questionId: 3, answerIds: [7, 8, 9, 10] },
+  { questionId: 4, answerIds: [11, 12] },
+  { questionId: 5, answerIds: [13, 14, 15, 16] },
+  { questionId: 6, answerIds: [5, 6] },
+];
 
 
 export const QuizQuestionPage: React.FC = () => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState<string[]>([]);
     const [quizTime, setQuizTime] = useState(120);
-    const [isQuizOver, setIsQuizOver] = useState(false); 
+    const [isQuizOver, setIsQuizOver] = useState(false);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -52,9 +62,9 @@ export const QuizQuestionPage: React.FC = () => {
               return prevTime - 1;
             });
           }, 1000);
-    
         return () => clearInterval(timer);
-    }, []);
+    }, [quizTime]);
+  
     
     const currentQuestion = questions[currentQuestionIndex];
 
@@ -108,7 +118,8 @@ export const QuizQuestionPage: React.FC = () => {
                     />
                 </>
             )}
-            {isQuizOver && <div className='text-3xl font-medium text-amber-500 mb-16 text-center w-2/3 mx-auto'>Quiz is over!</div>}
+              {isQuizOver && <QuizResultsPage/>
+            }
         </>
     )
 }
