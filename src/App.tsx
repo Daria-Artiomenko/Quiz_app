@@ -1,14 +1,18 @@
 // import { QuizConfigPage } from './pages/quizConfigPage/QuizConfigPage'
-import './App.css'
 import { QuizQuestionPage } from './pages/quizQuestionPage/QuizQuestionPage'
+// import { QuizResultsPage } from './pages/quizResultsPage/QuizResultsPage'
+
+import './App.css'
+
 
 function App() {
 
   return (
-    <>
-    {/* <QuizConfigPage/> */}
-    <QuizQuestionPage/>
-    </>
+		<>
+			{/* <QuizConfigPage/> */}
+			<QuizQuestionPage/>
+			{/* <QuizResultsPage/> */}
+		</>
   )
 }
 
