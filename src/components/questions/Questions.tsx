@@ -4,17 +4,16 @@ import AnswerOptions from '../answerOptions/AnswerOptions';
 interface AnswerOption {
     id: number;
     text: string;
-    isCorrect: boolean;
-  }
+}
   
-  interface QuestionProps {
+interface QuestionProps {
     question: string;
     category: string;
     type: 'multiple' | 'boolean';
     answers: AnswerOption[];
     selectedAnswers: string[];
     onAnswerSelect: (answer: string) => void;
-  }
+}
   
   const Question: React.FC<QuestionProps> = ({
     question,
