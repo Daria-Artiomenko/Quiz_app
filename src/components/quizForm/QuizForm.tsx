@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import NumberInput from '../numberInput/NumberInput';
 import SelectInput from '../selectInput/SelectInput';
 import ButtonMain from '../buttonMain/ButtonMain';
+import { Link } from 'react-router-dom';
 
 interface Option {
     value: string;
@@ -78,7 +79,10 @@ export const QuizForm : React.FC = () => {
             onChange={setTime}
             options={times}
         />
-        <ButtonMain onClick={handleStartQuiz} label="Start Quiz" />
+        <Link to='/quiz'> 
+          <ButtonMain onClick={handleStartQuiz} label="Start Quiz" />
+        </Link>
+
     </div>
     );
   };

@@ -4,8 +4,10 @@ import Question from '../../components/questions/Questions';
 import ButtonSecondary from '../../components/buttonSecondary/ButtonSecondary';
 import ButtonMain from '../../components/buttonMain/ButtonMain';
 import Timer from '../../components/timer/Timer';
-import { QuizResultsPage } from '../quizResultsPage/QuizResultsPage';
+import { ModalWindow } from '../../components/modalWindow/ModalWindow';
 import { questions, answers, questionAnswers } from '../../data/mockData';
+
+import { Link } from 'react-router-dom';
 
 
 export const QuizQuestionPage: React.FC = () => {
@@ -13,6 +15,7 @@ export const QuizQuestionPage: React.FC = () => {
     const [selectedAnswer, setSelectedAnswer] = useState<string[]>([]);
     const [quizTime, setQuizTime] = useState(120);
     const [isQuizOver, setIsQuizOver] = useState(false);
+	const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
 
@@ -20,15 +23,15 @@ export const QuizQuestionPage: React.FC = () => {
             setQuizTime((prevTime) => {
               if (prevTime === 0) {
                 setIsQuizOver(true);
-				() => clearInterval(timer); 
+				() => clearInterval(timer)
                 return 0; 
               }
               return prevTime - 1;
             });
           }, 1000);
-        return ;
+        return () => clearInterval(timer);
 
-    }, [quizTime]);
+    }, [quizTime, isQuizOver]);
   
     
     const currentQuestion = questions[currentQuestionIndex];
@@ -58,8 +61,11 @@ export const QuizQuestionPage: React.FC = () => {
     };
     
     const handleEndQuiz = () => {
-        setIsQuizOver(true); 
-      };
+        setShowModal(true);
+    };
+	const handleCancelEndQuiz = () => {
+		setShowModal(false);
+	  };
 
     return (
         <>
@@ -78,7 +84,14 @@ export const QuizQuestionPage: React.FC = () => {
     
                     <div className='flex gap-4 mb-16 justify-center'>
                             <ButtonMain onClick={handleNextQuestion} label="Next"/>
+
                             <ButtonSecondary onClick={handleEndQuiz} label="End Quiz" styles='w-32 h-12 mt-10'/>
+							<ModalWindow
+								isOpen={showModal}
+								onCancel={handleCancelEndQuiz}
+							>
+								<p className='text-xl font-medium text-amber-500 mb-4 text-center'>Are you sure you want to end the quiz?</p>
+							</ModalWindow>
                     </div>
                     <ProgressBar
                         currentIndex={currentQuestionIndex}
@@ -86,7 +99,13 @@ export const QuizQuestionPage: React.FC = () => {
                     />
                 </>
             )}
-            {isQuizOver && <QuizResultsPage/>}
+            {isQuizOver && 
+				<div>
+					<h2 className='text-5xl font-bold text-amber-500 mb-6'>The quiz is over!</h2> 
+					<Link to='/results'>
+						<ButtonMain label="Results"/>
+					</Link>
+				</div>}
         </>
     )
 }

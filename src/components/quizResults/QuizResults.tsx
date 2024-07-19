@@ -1,5 +1,6 @@
 import React from 'react';
 import ButtonMain from '../../components/buttonMain/ButtonMain';
+import { Link } from 'react-router-dom';
 
 interface QuizResultsProps {
   correctAnswers: number;
@@ -20,7 +21,6 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
   totalQuestions,
   quizConfig,
   timeTaken,
-  onRestart,
   onChooseAnother,
 }) => {
     const formattedTimeTaken = new Date(timeTaken * 1000).toISOString().slice(14, 19);
@@ -43,8 +43,13 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
             </div>
             
             <div className='flex justify-center mt-4 gap-4'>
-            <ButtonMain onClick={onRestart} label="Restart" />
-            <ButtonMain onClick={onChooseAnother} label="Choose Another Quiz" />
+                <Link to='/quiz'>
+                    <ButtonMain label="Restart" />                
+                </Link>
+                <Link to='/'>
+                    <ButtonMain onClick={onChooseAnother} label="Choose Another Quiz" />
+                </Link>
+
             </div>
         </div>
     );
