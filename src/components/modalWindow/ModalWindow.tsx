@@ -6,8 +6,9 @@ import { Link } from 'react-router-dom';
 export const ModalWindow: React.FC<{
   isOpen: boolean;
   onCancel: () => void;
+  onConfirm: () => void;
   children: React.ReactNode;
-}> = ({ isOpen, onCancel, children }) => {
+}> = ({ isOpen, onCancel, onConfirm, children }) => {
   if (!isOpen) return null;
 
   return ReactDOM.createPortal(
@@ -16,7 +17,7 @@ export const ModalWindow: React.FC<{
                 {children}
                 <div className="flex justify-end gap-4">
 
-                    <Link to='/'> <ButtonMain label='Confirm'></ButtonMain> </Link>
+                    <ButtonMain onClick={onConfirm} label='Confirm'></ButtonMain>
 
                     <ButtonMain onClick={onCancel} label='Cancel'></ButtonMain>
                 </div>

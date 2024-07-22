@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import NumberInput from '../numberInput/NumberInput';
 import SelectInput from '../selectInput/SelectInput';
 import ButtonMain from '../buttonMain/ButtonMain';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface Option {
     value: string;
@@ -15,7 +15,9 @@ export const QuizForm : React.FC = () => {
     const [difficulty, setDifficulty] = useState<Option | null>(null);
     const [type, setType] = useState<Option | null>(null);
     const [time, setTime] = useState<Option | null>(null);
-  
+	
+	const navigate = useNavigate();
+
     const categories = [
       { value: 'any', label: 'Any Category' },
       { value: 'animals', label: 'Animals' },
@@ -42,7 +44,7 @@ export const QuizForm : React.FC = () => {
     ];
 
     const handleStartQuiz = () => {
-    //
+		  navigate('/quiz');
     };
   
     return (
@@ -79,9 +81,8 @@ export const QuizForm : React.FC = () => {
             onChange={setTime}
             options={times}
         />
-        <Link to='/quiz'> 
-          <ButtonMain onClick={handleStartQuiz} label="Start Quiz" />
-        </Link>
+        
+		<ButtonMain onClick={handleStartQuiz} label="Start Quiz" />
 
     </div>
     );

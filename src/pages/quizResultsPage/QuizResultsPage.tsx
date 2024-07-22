@@ -15,8 +15,6 @@ export const QuizResultsPage: React.FC = () => {
       totalQuestions={10}
       quizConfig={quizConfig}
       timeTaken={90}
-      onRestart={() => console.log('Restart clicked')}
-      onChooseAnother={() => console.log('Choose Another clicked')}
     />
   );
 };

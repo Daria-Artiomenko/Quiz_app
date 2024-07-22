@@ -7,7 +7,7 @@ import Timer from '../../components/timer/Timer';
 import { ModalWindow } from '../../components/modalWindow/ModalWindow';
 import { questions, answers, questionAnswers } from '../../data/mockData';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 export const QuizQuestionPage: React.FC = () => {
@@ -16,7 +16,7 @@ export const QuizQuestionPage: React.FC = () => {
     const [quizTime, setQuizTime] = useState(120);
     const [isQuizOver, setIsQuizOver] = useState(false);
 	const [showModal, setShowModal] = useState(false);
-
+    const navigate = useNavigate();
     useEffect(() => {
 
         const timer = setInterval(() => {
@@ -66,7 +66,9 @@ export const QuizQuestionPage: React.FC = () => {
 	const handleCancelEndQuiz = () => {
 		setShowModal(false);
 	  };
-
+    const handleGotoResults = () => {
+        navigate('/results');
+    }
     return (
         <>
             {!isQuizOver && (
@@ -89,6 +91,7 @@ export const QuizQuestionPage: React.FC = () => {
 							<ModalWindow
 								isOpen={showModal}
 								onCancel={handleCancelEndQuiz}
+                                onConfirm={handleGotoResults}
 							>
 								<p className='text-xl font-medium text-amber-500 mb-4 text-center'>Are you sure you want to end the quiz?</p>
 							</ModalWindow>
@@ -102,9 +105,7 @@ export const QuizQuestionPage: React.FC = () => {
             {isQuizOver && 
 				<div>
 					<h2 className='text-5xl font-bold text-amber-500 mb-6'>The quiz is over!</h2> 
-					<Link to='/results'>
-						<ButtonMain label="Results"/>
-					</Link>
+						<ButtonMain onClick={handleGotoResults} label="Results"/>
 				</div>}
         </>
     )
