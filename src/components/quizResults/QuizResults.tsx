@@ -1,5 +1,6 @@
 import React from 'react';
 import ButtonMain from '../../components/buttonMain/ButtonMain';
+import { useNavigate } from 'react-router-dom';
 
 interface QuizResultsProps {
   correctAnswers: number;
@@ -11,8 +12,6 @@ interface QuizResultsProps {
     difficulty: string;
   };
   timeTaken: number;
-  onRestart: () => void;
-  onChooseAnother: () => void;
 }
 
 export const QuizResults: React.FC<QuizResultsProps> = ({
@@ -20,11 +19,17 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
   totalQuestions,
   quizConfig,
   timeTaken,
-  onRestart,
-  onChooseAnother,
 }) => {
     const formattedTimeTaken = new Date(timeTaken * 1000).toISOString().slice(14, 19);
+    const navigate = useNavigate();
 
+    const onRestart = () => {
+        navigate('/quiz');
+    };
+    const onChooseAnother = () => {
+        navigate('/');
+    };
+    
     return (
         <div >
             <h2 className='text-3xl font-medium text-amber-500 mb-16 text-center w-2/3 mx-auto'> Your Results:</h2>
@@ -43,8 +48,8 @@ export const QuizResults: React.FC<QuizResultsProps> = ({
             </div>
             
             <div className='flex justify-center mt-4 gap-4'>
-            <ButtonMain onClick={onRestart} label="Restart" />
-            <ButtonMain onClick={onChooseAnother} label="Choose Another Quiz" />
+                <ButtonMain onClick={onRestart} label="Restart" />                
+                <ButtonMain onClick={onChooseAnother} label="Choose Another Quiz" />
             </div>
         </div>
     );

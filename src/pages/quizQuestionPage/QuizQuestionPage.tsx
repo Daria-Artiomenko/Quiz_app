@@ -4,46 +4,10 @@ import Question from '../../components/questions/Questions';
 import ButtonSecondary from '../../components/buttonSecondary/ButtonSecondary';
 import ButtonMain from '../../components/buttonMain/ButtonMain';
 import Timer from '../../components/timer/Timer';
-import { QuizResultsPage } from '../quizResultsPage/QuizResultsPage';
+import { ModalWindow } from '../../components/modalWindow/ModalWindow';
+import { questions, answers, questionAnswers } from '../../data/mockData';
 
-
-// Mock data
-const questions = [
-    { id: 1, text: "What is the capital of France?", type: "multiple", category: "Geography" },
-    { id: 2, text: "The Great Pyramid of Giza is located in which country?", type: "boolean", category: "History" },
-    { id: 3, text: "What is the capital of France?", type: "multiple", category: "Geography" },
-    { id: 4, text: "The Great Pyramid of Giza is located in which country?", type: "boolean", category: "History" },
-    { id: 5, text: "What is the capital of France?", type: "multiple", category: "Geography" },
-    { id: 6, text: "The Great Pyramid of Giza is located in which country?", type: "boolean", category: "History" },
-  ];
-  
-const answers = [
-  { id: 1, text: "Paris", isCorrect: true },
-  { id: 2, text: "London", isCorrect: false },
-  { id: 3, text: "Berlin", isCorrect: false },
-  { id: 4, text: "Minsk", isCorrect: false },
-  { id: 5, text: "Madrid", isCorrect: false },
-  { id: 6, text: "London", isCorrect: true },
-  { id: 7, text: "Berlin", isCorrect: false },
-  { id: 8, text: "Minsk", isCorrect: false },
-  { id: 9, text: "Madrid", isCorrect: false },
-  { id: 10, text: "London", isCorrect: true },
-  { id: 11, text: "Berlin", isCorrect: false },
-  { id: 12, text: "Berlin", isCorrect: false },
-  { id: 13, text: "Minsk", isCorrect: false },
-  { id: 14, text: "Madrid", isCorrect: false },
-  { id: 15, text: "London", isCorrect: true },
-  { id: 16, text: "Berlin", isCorrect: false },
-];
-
-const questionAnswers = [
-  { questionId: 1, answerIds: [1, 2, 3, 4] },
-  { questionId: 2, answerIds: [5, 6] },
-  { questionId: 3, answerIds: [7, 8, 9, 10] },
-  { questionId: 4, answerIds: [11, 12] },
-  { questionId: 5, answerIds: [13, 14, 15, 16] },
-  { questionId: 6, answerIds: [5, 6] },
-];
+import { Link, useNavigate } from 'react-router-dom';
 
 
 export const QuizQuestionPage: React.FC = () => {
@@ -51,19 +15,23 @@ export const QuizQuestionPage: React.FC = () => {
     const [selectedAnswer, setSelectedAnswer] = useState<string[]>([]);
     const [quizTime, setQuizTime] = useState(120);
     const [isQuizOver, setIsQuizOver] = useState(false);
-
+	const [showModal, setShowModal] = useState(false);
+    const navigate = useNavigate();
     useEffect(() => {
+
         const timer = setInterval(() => {
             setQuizTime((prevTime) => {
               if (prevTime === 0) {
-                setIsQuizOver(true); 
+                setIsQuizOver(true);
+				() => clearInterval(timer)
                 return 0; 
               }
               return prevTime - 1;
             });
           }, 1000);
         return () => clearInterval(timer);
-    }, [quizTime]);
+
+    }, [quizTime, isQuizOver]);
   
     
     const currentQuestion = questions[currentQuestionIndex];
@@ -72,7 +40,7 @@ export const QuizQuestionPage: React.FC = () => {
 
     const answerOptionsForCurrentQuestion = currentQuestionAnswers
     ? answers.filter((a) => currentQuestionAnswers.answerIds.includes(a.id))
-        .map(a => ({ id: a.id, text: a.text, option: a.text, isCorrect: a.isCorrect }))
+        .map(a => ({ id: a.id, text: a.text}))
     : [];
 
     const handleNextQuestion = () => {
@@ -93,9 +61,14 @@ export const QuizQuestionPage: React.FC = () => {
     };
     
     const handleEndQuiz = () => {
-        setIsQuizOver(true); 
-      };
-
+        setShowModal(true);
+    };
+	const handleCancelEndQuiz = () => {
+		setShowModal(false);
+	  };
+    const handleGotoResults = () => {
+        navigate('/results');
+    }
     return (
         <>
             {!isQuizOver && (
@@ -113,7 +86,15 @@ export const QuizQuestionPage: React.FC = () => {
     
                     <div className='flex gap-4 mb-16 justify-center'>
                             <ButtonMain onClick={handleNextQuestion} label="Next"/>
+
                             <ButtonSecondary onClick={handleEndQuiz} label="End Quiz" styles='w-32 h-12 mt-10'/>
+							<ModalWindow
+								isOpen={showModal}
+								onCancel={handleCancelEndQuiz}
+                                onConfirm={handleGotoResults}
+							>
+								<p className='text-xl font-medium text-amber-500 mb-4 text-center'>Are you sure you want to end the quiz?</p>
+							</ModalWindow>
                     </div>
                     <ProgressBar
                         currentIndex={currentQuestionIndex}
@@ -121,7 +102,11 @@ export const QuizQuestionPage: React.FC = () => {
                     />
                 </>
             )}
-            {isQuizOver && <QuizResultsPage/>}
+            {isQuizOver && 
+				<div>
+					<h2 className='text-5xl font-bold text-amber-500 mb-6'>The quiz is over!</h2> 
+						<ButtonMain onClick={handleGotoResults} label="Results"/>
+				</div>}
         </>
     )
 }

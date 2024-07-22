@@ -3,7 +3,6 @@ import React from 'react';
 interface AnswerOption {
     id: number;
     text: string;
-    isCorrect: boolean;
 }
 
 interface AnswerOptionsProps {
