@@ -1,20 +1,20 @@
-import React from 'react';
-import { QuizResults } from '../../components/quizResults/QuizResults';
+import React from "react";
+import { QuizResults } from "../../components/quizResults/QuizResults";
 
 const quizConfig = {
-  type: 'Multiple Choice',
-  category: 'History',
-  time: 120,
-  difficulty: 'Medium',
+    type: "Multiple Choice",
+    category: "History",
+    time: 120,
+    difficulty: "Medium",
 };
 
 export const QuizResultsPage: React.FC = () => {
-  return (
-    <QuizResults
-      correctAnswers={5}
-      totalQuestions={10}
-      quizConfig={quizConfig}
-      timeTaken={90}
-    />
-  );
+    return (
+        <QuizResults
+            correctAnswers={5}
+            totalQuestions={10}
+            quizConfig={quizConfig}
+            timeTaken={90}
+        />
+    );
 };
