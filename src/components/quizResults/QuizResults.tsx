@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { clearQuizData, startQuiz } from "../../features/quizQuestionSlice";
 import { resetConfigQuiz } from "../../features/quizConfigSlice";
+import { ResultRow } from "../resultRow/ResultRow";
 
 export const QuizResults: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -53,35 +54,11 @@ export const QuizResults: React.FC = () => {
                 &#x20; questions correctly.
             </p>
             <div className='flex flex-col gap-2 text-xl font-light text-zinc-200 text-center'>
-                <p>
-                    <span className='font-medium text-amber-500'>Type: </span>
-                    {type}
-                </p>
-                <p>
-                    <span className='font-medium text-amber-500'>
-                        Category: &#x20;
-                    </span>
-                    {categoryText}
-                </p>
-                <p>
-                    <span className='font-medium text-amber-500'>
-                        Time spent: &#x20;
-                    </span>
-                    {timeSpent}
-                </p>
-                <p>
-                    <span className='font-medium text-amber-500'>
-                        Time: &#x20;
-                    </span>
-                    {time} minutes
-                </p>
-
-                <p>
-                    <span className='font-medium text-amber-500'>
-                        Difficulty: &#x20;
-                    </span>
-                    {difficulty}
-                </p>
+                <ResultRow type='Type: ' text={type} />
+                <ResultRow type='Category: ' text={categoryText} />
+                <ResultRow type='Time spent: ' text={timeSpent} />
+                <ResultRow type='Time: ' text={`${time} minutes`} />
+                <ResultRow type='Difficulty: ' text={difficulty} />
             </div>
 
             <div className='flex justify-center mt-4 gap-4'>
