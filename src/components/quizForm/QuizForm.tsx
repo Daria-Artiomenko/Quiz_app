@@ -15,6 +15,7 @@ import {
 import { useGetQuestionsQuery } from "../../services/getQuestions";
 import { startQuiz } from "../../features/quizQuestionSlice";
 import { categories, difficulties, types, times } from "../../data/constants";
+import { paths } from "../../App";
 
 export const QuizForm: React.FC = () => {
     const quizConfig = useAppSelector((state) => state.quizConfig);
@@ -43,7 +44,7 @@ export const QuizForm: React.FC = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         dispatch(startQuiz());
-        navigate("/quiz");
+        navigate(paths.quiz);
     };
 
     return (

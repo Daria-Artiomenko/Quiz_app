@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { clearQuizData, startQuiz } from "../../features/quizQuestionSlice";
 import { resetConfigQuiz } from "../../features/quizConfigSlice";
 import { ResultRow } from "../resultRow/ResultRow";
+import { paths } from "../../App";
 
 export const QuizResults: React.FC = () => {
     const dispatch = useAppDispatch();
@@ -28,12 +29,12 @@ export const QuizResults: React.FC = () => {
     const onRestart = () => {
         dispatch(clearQuizData());
         dispatch(startQuiz());
-        navigate("/quiz");
+        navigate(paths.quiz);
     };
     const onChooseAnother = () => {
         dispatch(resetConfigQuiz());
         dispatch(clearQuizData());
-        navigate("/");
+        navigate(paths.quizConfig);
     };
 
     return (

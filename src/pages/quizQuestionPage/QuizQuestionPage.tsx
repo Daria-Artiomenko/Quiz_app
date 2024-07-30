@@ -5,6 +5,7 @@ import ButtonSecondary from "../../components/buttonSecondary/ButtonSecondary";
 import ButtonMain from "../../components/buttonMain/ButtonMain";
 import Timer from "../../components/timer/Timer";
 import { ModalWindow } from "../../components/modalWindow/ModalWindow";
+import { paths } from "../../App";
 
 import { useGetQuestionsQuery } from "../../services/getQuestions";
 import { useNavigate } from "react-router-dom";
@@ -24,8 +25,9 @@ export const QuizQuestionPage: React.FC = () => {
     const [quizTime, setQuizTime] = useState(time ? +time * 60 : 0);
 
     const dispatch = useAppDispatch();
-    const { questions, currentQuestionIndex, userAnswer, correctAnswers } =
-        useAppSelector((state) => state.quizQuestion);
+    const { questions, currentQuestionIndex, userAnswer } = useAppSelector(
+        (state) => state.quizQuestion
+    );
 
     const { data } = useGetQuestionsQuery(
         {
@@ -43,7 +45,7 @@ export const QuizQuestionPage: React.FC = () => {
         const timer = setInterval(() => {
             setQuizTime((prevTime) => {
                 if (prevTime === 0) {
-                    navigate("/results", { state: { correctAnswers } });
+                    navigate(paths.results);
                     clearInterval(timer);
                     return 0;
                 }
@@ -71,7 +73,7 @@ export const QuizQuestionPage: React.FC = () => {
     const handleNextQuestion = () => {
         dispatch(checkAnswer());
         if (currentQuestionIndex === questions.length - 1) {
-            navigate("/results", { state: { correctAnswers } });
+            navigate(paths.results);
         } else {
             dispatch(goToNextQuestion());
         }
@@ -84,7 +86,7 @@ export const QuizQuestionPage: React.FC = () => {
         setShowModal(false);
     };
     const handleGotoResults = () => {
-        navigate("/results", { state: { correctAnswers } });
+        navigate(paths.results);
     };
     return (
         <>
