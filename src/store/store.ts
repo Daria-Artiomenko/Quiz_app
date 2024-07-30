@@ -1,15 +1,22 @@
-import { configureStore } from "@reduxjs/toolkit";
-import quizConfigReducer from "../features/quizConfigSlice";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import quizConfigSlice from "../features/quizConfigSlice";
 import { quizApi } from "../services/getQuestions";
+import quizQuestionSlice from "../features/quizQuestionSlice";
 
-export const store = configureStore({
-    reducer: {
-        quizConfig: quizConfigReducer,
-        [quizApi.reducerPath]: quizApi.reducer,
-    },
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(quizApi.middleware),
+const rootReducer = combineReducers({
+    quizConfig: quizConfigSlice,
+    [quizApi.reducerPath]: quizApi.reducer,
+    quizQuestion: quizQuestionSlice,
 });
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export const setUpStore = () => {
+    return configureStore({
+        reducer: rootReducer,
+        middleware: (getDefaultMiddleware) =>
+            getDefaultMiddleware().concat(quizApi.middleware),
+    });
+};
+
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppStore = ReturnType<typeof setUpStore>;
+export type AppDispatch = AppStore["dispatch"];

@@ -6,12 +6,14 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
     setCategory,
+    setCategoryText,
     setDifficulty,
     setNumberOfQuestions,
     setTime,
     setType,
 } from "../../features/quizConfigSlice";
 import { useGetQuestionsQuery } from "../../services/getQuestions";
+import { startQuiz } from "../../features/quizQuestionSlice";
 
 interface Option {
     value: string;
@@ -23,7 +25,7 @@ export const QuizForm: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { numberOfQuestions, category, difficulty, type, time } = quizConfig;
-    const { data, isLoading } = useGetQuestionsQuery(
+    const { isLoading, error } = useGetQuestionsQuery(
         {
             numberOfQuestions,
             category,
@@ -36,33 +38,55 @@ export const QuizForm: React.FC = () => {
     );
 
     const categories: Option[] = [
-        { value: "any", label: "Any Category" },
-        { value: "9", label: "Animals" },
-        { value: "10", label: "Books" },
+        { value: "9", label: "General Knowledge" },
+        { value: "10", label: "Entertainment: Books" },
+        { value: "11", label: "Entertainment: Film" },
+        { value: "12", label: "Entertainment: Music" },
+        { value: "13", label: "Entertainment: Musicals & Theatres" },
+        { value: "14", label: "Entertainment: Television" },
+        { value: "15", label: "Entertainment: Video Games" },
+        { value: "16", label: "Entertainment: Board Games" },
+        { value: "18", label: "Science: Computers" },
+        { value: "19", label: "Science: Mathematics" },
+        { value: "20", label: "Mythology" },
+        { value: "21", label: "Sports" },
+        { value: "22", label: "Geography" },
+        { value: "23", label: "History" },
     ];
 
     const difficulties: Option[] = [
-        { value: "any", label: "Any Difficulty" },
         { value: "easy", label: "Easy" },
         { value: "medium", label: "Medium" },
         { value: "hard", label: "Hard" },
     ];
 
     const types: Option[] = [
-        { value: "any", label: "Any Type" },
         { value: "multiple", label: "Multiple Choice" },
         { value: "boolean", label: "True/False" },
     ];
 
     const times: Option[] = [
-        { value: "1m", label: "1 minute" },
-        { value: "2m", label: "2 minutes" },
-        { value: "5m", label: "5 minutes" },
+        { value: "1", label: "1 minute" },
+        { value: "2", label: "2 minutes" },
+        { value: "5", label: "5 minutes" },
     ];
 
+    const handleButtonClick = () => {
+        dispatch(
+            setCategoryText(
+                categories.map((cat: Option) => {
+                    if (cat.value === category) {
+                        return cat.label;
+                    } else {
+                        return null;
+                    }
+                })
+            )
+        );
+    };
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(data);
+        dispatch(startQuiz());
         navigate("/quiz");
     };
 
@@ -113,7 +137,16 @@ export const QuizForm: React.FC = () => {
             <ButtonMain
                 buttonType='submit'
                 label={isLoading ? "Loading..." : "Start Quiz"}
+                disabled={!!isLoading || !!error}
+                onClick={handleButtonClick}
             />
+            {error && (
+                <p className='text-red-500'>
+                    Something went wrong.
+                    <br />
+                    Try to change the parameters of the quiz.
+                </p>
+            )}
         </form>
     );
 };

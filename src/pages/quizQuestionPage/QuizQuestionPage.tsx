@@ -5,58 +5,76 @@ import ButtonSecondary from "../../components/buttonSecondary/ButtonSecondary";
 import ButtonMain from "../../components/buttonMain/ButtonMain";
 import Timer from "../../components/timer/Timer";
 import { ModalWindow } from "../../components/modalWindow/ModalWindow";
-import { questions, answers, questionAnswers } from "../../data/mockData";
 
+import { useGetQuestionsQuery } from "../../services/getQuestions";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import {
+    setQuestions,
+    setUserAnswer,
+    checkAnswer,
+    goToNextQuestion,
+} from "../../features/quizQuestionSlice";
 
 export const QuizQuestionPage: React.FC = () => {
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [selectedAnswer, setSelectedAnswer] = useState<string[]>([]);
-    const [quizTime, setQuizTime] = useState(120);
-    const [isQuizOver, setIsQuizOver] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
+    const quizConfig = useAppSelector((state) => state.quizConfig);
+    const { numberOfQuestions, category, difficulty, type, time } = quizConfig;
+    const [quizTime, setQuizTime] = useState(time ? +time * 60 : 0);
+
+    const dispatch = useAppDispatch();
+    const { questions, currentQuestionIndex, userAnswer, correctAnswers } =
+        useAppSelector((state) => state.quizQuestion);
+
+    const { data } = useGetQuestionsQuery(
+        {
+            numberOfQuestions,
+            category,
+            difficulty,
+            type,
+        },
+        {
+            skip: !numberOfQuestions || !category || !difficulty || !type,
+        }
+    );
+
     useEffect(() => {
         const timer = setInterval(() => {
             setQuizTime((prevTime) => {
                 if (prevTime === 0) {
-                    setIsQuizOver(true);
-                    () => clearInterval(timer);
+                    navigate("/results", { state: { correctAnswers } });
+                    clearInterval(timer);
                     return 0;
                 }
                 return prevTime - 1;
             });
         }, 1000);
         return () => clearInterval(timer);
-    }, [quizTime, isQuizOver]);
+    }, []);
 
-    const currentQuestion = questions[currentQuestionIndex];
-
-    const currentQuestionAnswers = questionAnswers.find(
-        (qa) => qa.questionId === currentQuestion.id
-    );
-
-    const answerOptionsForCurrentQuestion = currentQuestionAnswers
-        ? answers
-              .filter((a) => currentQuestionAnswers.answerIds.includes(a.id))
-              .map((a) => ({ id: a.id, text: a.text }))
-        : [];
-
-    const handleNextQuestion = () => {
-        if (currentQuestionIndex === questions.length - 1) {
-            setIsQuizOver(true);
-        } else {
-            setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    useEffect(() => {
+        if (data) {
+            dispatch(setQuestions(data));
         }
-        setSelectedAnswer([]);
-    };
-
+    }, [data, dispatch]);
+    const currentQuestion = data?.[currentQuestionIndex];
+    const currentQuestionAnswers = currentQuestion
+        ? [
+              currentQuestion.correct_answer,
+              ...(currentQuestion.incorrect_answers || []),
+          ].sort()
+        : [];
     const handleAnswerSelect = (answer: string) => {
-        setSelectedAnswer((prevSelectedAnswer) =>
-            prevSelectedAnswer.includes(answer)
-                ? prevSelectedAnswer.filter((a) => a !== answer)
-                : [...prevSelectedAnswer, answer]
-        );
+        dispatch(setUserAnswer(answer));
+    };
+    const handleNextQuestion = () => {
+        dispatch(checkAnswer());
+        if (currentQuestionIndex === questions.length - 1) {
+            navigate("/results", { state: { correctAnswers } });
+        } else {
+            dispatch(goToNextQuestion());
+        }
     };
 
     const handleEndQuiz = () => {
@@ -66,21 +84,21 @@ export const QuizQuestionPage: React.FC = () => {
         setShowModal(false);
     };
     const handleGotoResults = () => {
-        navigate("/results");
+        navigate("/results", { state: { correctAnswers } });
     };
     return (
         <>
-            {!isQuizOver && (
+            {data && currentQuestion && (
                 <>
                     <Timer time={quizTime} onTimeUp={handleEndQuiz} />
                     <Question
-                        key={currentQuestion.id}
-                        question={currentQuestion.text}
+                        key={currentQuestion.question}
+                        question={currentQuestion.question}
                         category={currentQuestion.category}
                         type={currentQuestion.type as "boolean" | "multiple"}
-                        answers={answerOptionsForCurrentQuestion}
-                        selectedAnswers={selectedAnswer}
+                        answers={currentQuestionAnswers}
                         onAnswerSelect={handleAnswerSelect}
+                        userAnswer={userAnswer}
                     />
 
                     <div className='flex gap-4 mb-16 justify-center'>
@@ -102,17 +120,9 @@ export const QuizQuestionPage: React.FC = () => {
                     </div>
                     <ProgressBar
                         currentIndex={currentQuestionIndex}
-                        totalQuestions={questions.length}
+                        totalQuestions={data.length}
                     />
                 </>
-            )}
-            {isQuizOver && (
-                <div>
-                    <h2 className='text-5xl font-bold text-amber-500 mb-6'>
-                        The quiz is over!
-                    </h2>
-                    <ButtonMain onClick={handleGotoResults} label='Results' />
-                </div>
             )}
         </>
     );

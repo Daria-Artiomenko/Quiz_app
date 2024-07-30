@@ -1,80 +1,85 @@
 import React from "react";
 import ButtonMain from "../../components/buttonMain/ButtonMain";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { clearQuizData, startQuiz } from "../../features/quizQuestionSlice";
+import { resetConfigQuiz } from "../../features/quizConfigSlice";
 
-interface QuizResultsProps {
-    correctAnswers: number;
-    totalQuestions: number;
-    quizConfig: {
-        type: string;
-        category: string;
-        time: number;
-        difficulty: string;
+export const QuizResults: React.FC = () => {
+    const dispatch = useAppDispatch();
+    const quizConfig = useAppSelector((state) => state.quizConfig);
+    const { numberOfQuestions, type, categoryText, time, difficulty } =
+        quizConfig;
+    const quizQuestion = useAppSelector((state) => state.quizQuestion);
+    const { correctAnswers } = quizQuestion;
+    const { startTime } = quizQuestion;
+
+    const formatTime = (time: number) => {
+        const minutes = Math.floor(time / 60000);
+        const seconds = ((time % 60000) / 1000).toFixed(0);
+        return `${minutes}:${seconds.padStart(2, "0")}`;
     };
-    timeTaken: number;
-}
+    const timeSpent = startTime ? formatTime(Date.now() - startTime) : "0:00";
 
-export const QuizResults: React.FC<QuizResultsProps> = ({
-    correctAnswers,
-    totalQuestions,
-    quizConfig,
-    timeTaken,
-}) => {
-    const formattedTimeTaken = new Date(timeTaken * 1000)
-        .toISOString()
-        .slice(14, 19);
     const navigate = useNavigate();
 
     const onRestart = () => {
+        dispatch(clearQuizData());
+        dispatch(startQuiz());
         navigate("/quiz");
     };
     const onChooseAnother = () => {
+        dispatch(resetConfigQuiz());
+        dispatch(clearQuizData());
         navigate("/");
     };
 
     return (
         <div>
             <h2 className='text-3xl font-medium text-amber-500 mb-16 text-center w-2/3 mx-auto'>
-                Your Results:
+                Thank you for completing this quiz!
+                <br /> Here are your results
             </h2>
             <p className='text-xl font-light text-zinc-200 text-center mb-4'>
-                You answered
+                You answered &#x20;
                 <span className='font-medium text-amber-500'>
                     {correctAnswers}
                 </span>
-                out of
+                &#x20; out of &#x20;
                 <span className='font-medium text-amber-500'>
-                    {totalQuestions}
+                    {numberOfQuestions}
                 </span>
-                questions correctly.
+                &#x20; questions correctly.
             </p>
             <div className='flex flex-col gap-2 text-xl font-light text-zinc-200 text-center'>
                 <p>
                     <span className='font-medium text-amber-500'>Type: </span>
-                    {quizConfig.type}
+                    {type}
                 </p>
                 <p>
                     <span className='font-medium text-amber-500'>
-                        Category:
+                        Category: &#x20;
                     </span>
-                    {quizConfig.category}
+                    {categoryText}
                 </p>
                 <p>
                     <span className='font-medium text-amber-500'>
-                        Time spent:
+                        Time spent: &#x20;
                     </span>
-                    {formattedTimeTaken}
+                    {timeSpent}
                 </p>
                 <p>
-                    <span className='font-medium text-amber-500'>Time:</span>
-                    {quizConfig.time} seconds
+                    <span className='font-medium text-amber-500'>
+                        Time: &#x20;
+                    </span>
+                    {time} minutes
                 </p>
 
                 <p>
                     <span className='font-medium text-amber-500'>
-                        Difficulty:
+                        Difficulty: &#x20;
                     </span>
-                    {quizConfig.difficulty}
+                    {difficulty}
                 </p>
             </div>
 

@@ -2,8 +2,8 @@ import React from "react";
 
 interface NumberInputProps {
     label: string;
-    value: number;
-    onChange: (value: number) => void;
+    value: string | null;
+    onChange: (value: string) => void;
     min: number;
     max: number;
 }
@@ -28,8 +28,8 @@ const NumberInput: React.FC<NumberInputProps> = ({
                 type='number'
                 min={min}
                 max={max}
-                value={value}
-                onChange={(e) => onChange(parseInt(e.target.value))}
+                value={value ?? ""}
+                onChange={(e) => onChange(e.target.value)}
             />
         </div>
     );

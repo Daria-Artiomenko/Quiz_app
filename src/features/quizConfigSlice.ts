@@ -1,16 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface QuizConfigState {
-    numberOfQuestions: number;
+    numberOfQuestions: string | null;
     category: string | null;
+    categoryText: string | null;
     difficulty: "easy" | "medium" | "hard" | null;
     type: "boolean" | "multiple" | null;
     time: string | null;
 }
 
 const initialState: QuizConfigState = {
-    numberOfQuestions: 5,
+    numberOfQuestions: "5",
     category: null,
+    categoryText: null,
     difficulty: null,
     type: null,
     time: null,
@@ -26,6 +28,9 @@ export const quizConfigSlice = createSlice({
         setCategory: (state, action) => {
             state.category = action.payload;
         },
+        setCategoryText: (state, action) => {
+            state.categoryText = action.payload;
+        },
         setDifficulty: (state, action) => {
             state.difficulty = action.payload;
         },
@@ -36,7 +41,7 @@ export const quizConfigSlice = createSlice({
             state.time = action.payload;
         },
         resetConfigQuiz: (state) => {
-            state.numberOfQuestions = 5;
+            state.numberOfQuestions = "5";
             state.category = null;
             state.difficulty = null;
             state.type = null;
@@ -52,6 +57,7 @@ export const {
     setType,
     setTime,
     resetConfigQuiz,
+    setCategoryText,
 } = quizConfigSlice.actions;
 
 export default quizConfigSlice.reducer;

@@ -8,7 +8,7 @@ export const quizApi = createApi({
         getQuestions: builder.query<
             IQuestion[],
             {
-                numberOfQuestions: number | null;
+                numberOfQuestions: string | null;
                 category: string | null;
                 difficulty: string | null;
                 type: string | null;
