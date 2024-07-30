@@ -11,8 +11,7 @@ export const QuizResults: React.FC = () => {
     const { numberOfQuestions, type, categoryText, time, difficulty } =
         quizConfig;
     const quizQuestion = useAppSelector((state) => state.quizQuestion);
-    const { correctAnswers } = quizQuestion;
-    const { startTime } = quizQuestion;
+    const { correctAnswers, startTime } = quizQuestion;
 
     const formatTime = (time: number) => {
         const minutes = Math.floor(time / 60000);
