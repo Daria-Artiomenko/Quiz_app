@@ -18,10 +18,10 @@ import { categories, difficulties, types, times } from "../../data/constants";
 import { paths } from "../../App";
 
 export const QuizForm: React.FC = () => {
-    const quizConfig = useAppSelector((state) => state.quizConfig);
+    const { numberOfQuestions, category, difficulty, type, time } =
+        useAppSelector((state) => state.quizConfig);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const { numberOfQuestions, category, difficulty, type, time } = quizConfig;
     const { isLoading, error } = useGetQuestionsQuery(
         {
             numberOfQuestions,

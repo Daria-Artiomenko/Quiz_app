@@ -9,11 +9,11 @@ import { paths } from "../../App";
 
 export const QuizResults: React.FC = () => {
     const dispatch = useAppDispatch();
-    const quizConfig = useAppSelector((state) => state.quizConfig);
     const { numberOfQuestions, type, categoryText, time, difficulty } =
-        quizConfig;
-    const quizQuestion = useAppSelector((state) => state.quizQuestion);
-    const { correctAnswers, startTime } = quizQuestion;
+        useAppSelector((state) => state.quizConfig);
+    const { correctAnswers, startTime } = useAppSelector(
+        (state) => state.quizQuestion
+    );
 
     const getTimeSpent = (startTime: number | null) => {
         if (!startTime) return "0:00";
