@@ -13,12 +13,14 @@ export const QuizResults: React.FC = () => {
     const quizQuestion = useAppSelector((state) => state.quizQuestion);
     const { correctAnswers, startTime } = quizQuestion;
 
-    const formatTime = (time: number) => {
-        const minutes = Math.floor(time / 60000);
-        const seconds = ((time % 60000) / 1000).toFixed(0);
+    const getTimeSpent = (startTime: number | null) => {
+        if (!startTime) return "0:00";
+        const timeSpent = Date.now() - startTime;
+        const minutes = Math.floor(timeSpent / 60000);
+        const seconds = ((timeSpent % 60000) / 1000).toFixed(0);
         return `${minutes}:${seconds.padStart(2, "0")}`;
     };
-    const timeSpent = startTime ? formatTime(Date.now() - startTime) : "0:00";
+    const timeSpent = getTimeSpent(startTime);
 
     const navigate = useNavigate();
 
