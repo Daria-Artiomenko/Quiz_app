@@ -1,4 +1,12 @@
 // Mock data
+// const fetchQuestions = async () => {
+//     const response = await fetch("https://opentdb.com/api_count_global.php");
+//     const data = await response.json();
+//     console.log(data.results);
+//     return data.results;
+// };
+
+// fetchQuestions();
 export const questions = [
     {
         id: 1,

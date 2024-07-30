@@ -1,8 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import NumberInput from "../numberInput/NumberInput";
 import SelectInput from "../selectInput/SelectInput";
 import ButtonMain from "../buttonMain/ButtonMain";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import {
+    setCategory,
+    setDifficulty,
+    setNumberOfQuestions,
+    setTime,
+    setType,
+} from "../../features/quizConfigSlice";
+import { useGetQuestionsQuery } from "../../services/getQuestions";
 
 interface Option {
     value: string;
@@ -10,82 +19,102 @@ interface Option {
 }
 
 export const QuizForm: React.FC = () => {
-    const [numQuestions, setNumQuestions] = useState(5);
-    const [category, setCategory] = useState<Option | null>(null);
-    const [difficulty, setDifficulty] = useState<Option | null>(null);
-    const [type, setType] = useState<Option | null>(null);
-    const [time, setTime] = useState<Option | null>(null);
-
+    const quizConfig = useAppSelector((state) => state.quizConfig);
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const { numberOfQuestions, category, difficulty, type, time } = quizConfig;
+    const { data, isLoading } = useGetQuestionsQuery(
+        {
+            numberOfQuestions,
+            category,
+            difficulty,
+            type,
+        },
+        {
+            skip: !numberOfQuestions || !category || !difficulty || !type,
+        }
+    );
 
-    const categories = [
+    const categories: Option[] = [
         { value: "any", label: "Any Category" },
-        { value: "animals", label: "Animals" },
-        { value: "books", label: "Books" },
+        { value: "9", label: "Animals" },
+        { value: "10", label: "Books" },
     ];
 
-    const difficulties = [
+    const difficulties: Option[] = [
         { value: "any", label: "Any Difficulty" },
         { value: "easy", label: "Easy" },
         { value: "medium", label: "Medium" },
         { value: "hard", label: "Hard" },
     ];
 
-    const types = [
+    const types: Option[] = [
         { value: "any", label: "Any Type" },
         { value: "multiple", label: "Multiple Choice" },
         { value: "boolean", label: "True/False" },
     ];
 
-    const times = [
+    const times: Option[] = [
         { value: "1m", label: "1 minute" },
         { value: "2m", label: "2 minutes" },
         { value: "5m", label: "5 minutes" },
     ];
 
-    const handleStartQuiz = () => {
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log(data);
         navigate("/quiz");
     };
 
     return (
-        <div className="w-2/5 mx-auto">
-            <h2 className="text-5xl font-bold text-amber-500 mb-16">
+        <form className='w-2/5 mx-auto' onSubmit={handleSubmit}>
+            <h2 className='text-5xl font-bold text-amber-500 mb-16'>
                 Create your Quiz
             </h2>
             <NumberInput
-                label="Number of Questions"
-                value={numQuestions}
-                onChange={setNumQuestions}
+                label='Number of Questions'
+                value={numberOfQuestions}
+                onChange={(value) => dispatch(setNumberOfQuestions(value))}
                 min={5}
                 max={15}
             />
             <SelectInput
-                label="Category"
-                value={category}
-                onChange={setCategory}
+                label='Category'
+                value={categories.find((cat) => cat.value === category) || null}
+                onChange={(value) =>
+                    dispatch(setCategory(value?.value || null))
+                }
                 options={categories}
             />
             <SelectInput
-                label="Difficulty"
-                value={difficulty}
-                onChange={setDifficulty}
+                label='Difficulty'
+                value={
+                    difficulties.find((diff) => diff.value === difficulty) ||
+                    null
+                }
+                onChange={(value) =>
+                    dispatch(setDifficulty(value?.value || null))
+                }
                 options={difficulties}
             />
             <SelectInput
-                label="Type"
-                value={type}
-                onChange={setType}
+                label='Type'
+                value={types.find((t) => t.value === type) || null}
+                onChange={(value) => dispatch(setType(value?.value || null))}
                 options={types}
             />
             <SelectInput
-                label="Time"
-                value={time}
-                onChange={setTime}
+                label='Time'
+                value={times.find((t) => t.value === time) || null}
+                onChange={(value) => dispatch(setTime(value?.value || null))}
                 options={times}
             />
 
-            <ButtonMain onClick={handleStartQuiz} label="Start Quiz" />
-        </div>
+            <ButtonMain
+                buttonType='submit'
+                label={isLoading ? "Loading..." : "Start Quiz"}
+            />
+        </form>
     );
 };
 
