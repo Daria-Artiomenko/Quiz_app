@@ -15,10 +15,6 @@ import {
 import { useGetQuestionsQuery } from "../../services/getQuestions";
 import { startQuiz } from "../../features/quizQuestionSlice";
 import { categories, difficulties, types, times } from "../../data/constants";
-interface Option {
-    value: string;
-    label: string;
-}
 
 export const QuizForm: React.FC = () => {
     const quizConfig = useAppSelector((state) => state.quizConfig);
@@ -40,13 +36,7 @@ export const QuizForm: React.FC = () => {
     const handleButtonClick = () => {
         dispatch(
             setCategoryText(
-                categories.map((cat: Option) => {
-                    if (cat.value === category) {
-                        return cat.label;
-                    } else {
-                        return null;
-                    }
-                })
+                categories.find((cat) => cat.value === category)?.label || ""
             )
         );
     };
