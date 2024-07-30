@@ -90,7 +90,7 @@ export const QuizQuestionPage: React.FC = () => {
         <>
             {data && currentQuestion && (
                 <>
-                    <Timer time={quizTime} onTimeUp={handleEndQuiz} />
+                    <Timer time={quizTime} onTimeUp={handleGotoResults} />
                     <Question
                         key={currentQuestion.question}
                         question={currentQuestion.question}
