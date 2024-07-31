@@ -2,11 +2,13 @@ import React from "react";
 import QuizForm from "../../components/quizForm/QuizForm";
 import ButtonSecondary from "../../components/buttonSecondary/ButtonSecondary";
 import { useNavigate } from "react-router-dom";
+import { paths } from "../../App";
+
 export const QuizConfigPage: React.FC = () => {
     const navigate = useNavigate();
 
     const handleViewStats = () => {
-        navigate("/statistic");
+        navigate(paths.statistic);
     };
     return (
         <>

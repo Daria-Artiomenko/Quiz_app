@@ -1,81 +1,66 @@
 import React from "react";
 import ButtonMain from "../../components/buttonMain/ButtonMain";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { clearQuizData, startQuiz } from "../../features/quizQuestionSlice";
+import { resetConfigQuiz } from "../../features/quizConfigSlice";
+import { ResultRow } from "../resultRow/ResultRow";
+import { paths } from "../../App";
 
-interface QuizResultsProps {
-    correctAnswers: number;
-    totalQuestions: number;
-    quizConfig: {
-        type: string;
-        category: string;
-        time: number;
-        difficulty: string;
-    };
-    timeTaken: number;
-}
+const getTimeSpent = (startTime: number | null) => {
+    if (!startTime) return "0:00";
+    const timeSpent = Date.now() - startTime;
+    const minutes = Math.floor(timeSpent / 60000);
+    const seconds = ((timeSpent % 60000) / 1000).toFixed(0);
+    return `${minutes}:${seconds.padStart(2, "0")}`;
+};
 
-export const QuizResults: React.FC<QuizResultsProps> = ({
-    correctAnswers,
-    totalQuestions,
-    quizConfig,
-    timeTaken,
-}) => {
-    const formattedTimeTaken = new Date(timeTaken * 1000)
-        .toISOString()
-        .slice(14, 19);
+export const QuizResults: React.FC = () => {
+    const dispatch = useAppDispatch();
+    const { numberOfQuestions, type, categoryText, time, difficulty } =
+        useAppSelector((state) => state.quizConfig);
+    const { correctAnswers, startTime } = useAppSelector(
+        (state) => state.quizQuestion
+    );
+
+    const timeSpent = getTimeSpent(startTime);
+
     const navigate = useNavigate();
 
     const onRestart = () => {
-        navigate("/quiz");
+        dispatch(clearQuizData());
+        dispatch(startQuiz());
+        navigate(paths.quiz);
     };
     const onChooseAnother = () => {
-        navigate("/");
+        dispatch(resetConfigQuiz());
+        dispatch(clearQuizData());
+        navigate(paths.quizConfig);
     };
 
     return (
         <div>
             <h2 className='text-3xl font-medium text-amber-500 mb-16 text-center w-2/3 mx-auto'>
-                Your Results:
+                Thank you for completing this quiz!
+                <br /> Here are your results
             </h2>
             <p className='text-xl font-light text-zinc-200 text-center mb-4'>
-                You answered
+                You answered &#x20;
                 <span className='font-medium text-amber-500'>
                     {correctAnswers}
                 </span>
-                out of
+                &#x20; out of &#x20;
                 <span className='font-medium text-amber-500'>
-                    {totalQuestions}
+                    {numberOfQuestions}
                 </span>
-                questions correctly.
+                &#x20; questions correctly.
             </p>
             <div className='flex flex-col gap-2 text-xl font-light text-zinc-200 text-center'>
-                <p>
-                    <span className='font-medium text-amber-500'>Type: </span>
-                    {quizConfig.type}
-                </p>
-                <p>
-                    <span className='font-medium text-amber-500'>
-                        Category:
-                    </span>
-                    {quizConfig.category}
-                </p>
-                <p>
-                    <span className='font-medium text-amber-500'>
-                        Time spent:
-                    </span>
-                    {formattedTimeTaken}
-                </p>
-                <p>
-                    <span className='font-medium text-amber-500'>Time:</span>
-                    {quizConfig.time} seconds
-                </p>
-
-                <p>
-                    <span className='font-medium text-amber-500'>
-                        Difficulty:
-                    </span>
-                    {quizConfig.difficulty}
-                </p>
+                <ResultRow type='Type: ' text={type} />
+                <ResultRow type='Category: ' text={categoryText} />
+                <ResultRow type='Time spent: ' text={timeSpent} />
+                <ResultRow type='Time: ' text={`${time} minutes`} />
+                <ResultRow type='Difficulty: ' text={difficulty} />
             </div>
 
             <div className='flex justify-center mt-4 gap-4'>

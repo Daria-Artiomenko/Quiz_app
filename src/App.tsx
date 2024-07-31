@@ -5,14 +5,20 @@ import { StatisticPage } from "./pages/statisticPage/StatisticPage";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 
+export const paths = {
+    quizConfig: "/",
+    statistic: "/statistic",
+    results: "/results",
+    quiz: "/quiz",
+};
 function App() {
     return (
         <>
             <Routes>
-                <Route path='/statistic' element={<StatisticPage />} />
-                <Route path='/results' element={<QuizResultsPage />} />
-                <Route path='/quiz' element={<QuizQuestionPage />} />
-                <Route path='/' element={<QuizConfigPage />} />
+                <Route path={paths.statistic} element={<StatisticPage />} />
+                <Route path={paths.results} element={<QuizResultsPage />} />
+                <Route path={paths.quiz} element={<QuizQuestionPage />} />
+                <Route path={paths.quizConfig} element={<QuizConfigPage />} />
             </Routes>
         </>
     );
