@@ -7,6 +7,14 @@ import { resetConfigQuiz } from "../../features/quizConfigSlice";
 import { ResultRow } from "../resultRow/ResultRow";
 import { paths } from "../../App";
 
+const getTimeSpent = (startTime: number | null) => {
+    if (!startTime) return "0:00";
+    const timeSpent = Date.now() - startTime;
+    const minutes = Math.floor(timeSpent / 60000);
+    const seconds = ((timeSpent % 60000) / 1000).toFixed(0);
+    return `${minutes}:${seconds.padStart(2, "0")}`;
+};
+
 export const QuizResults: React.FC = () => {
     const dispatch = useAppDispatch();
     const { numberOfQuestions, type, categoryText, time, difficulty } =
@@ -15,13 +23,6 @@ export const QuizResults: React.FC = () => {
         (state) => state.quizQuestion
     );
 
-    const getTimeSpent = (startTime: number | null) => {
-        if (!startTime) return "0:00";
-        const timeSpent = Date.now() - startTime;
-        const minutes = Math.floor(timeSpent / 60000);
-        const seconds = ((timeSpent % 60000) / 1000).toFixed(0);
-        return `${minutes}:${seconds.padStart(2, "0")}`;
-    };
     const timeSpent = getTimeSpent(startTime);
 
     const navigate = useNavigate();
