@@ -1,5 +1,6 @@
 import { useAppSelector } from "../../hooks/redux";
 import { StatsBlock } from "../statsBlock/StatsBlock";
+import { TotalStatsBlock } from "../totalStatsBlock/totalStatsBlock";
 
 export const Statistics: React.FC = () => {
     const {
@@ -21,18 +22,8 @@ export const Statistics: React.FC = () => {
                 <h3 className='text-xl font-light text-amber-500 mb-8'>
                     Overall
                 </h3>
-                <p className='text-m font-light text-zinc-200'>
-                    Total questions:{" "}
-                    <span className='text-m font-light text-zinc-400'>
-                        {totalQuestionsAmount}
-                    </span>
-                </p>
-                <p className='text-m font-light text-zinc-200'>
-                    Total Correct Answers:{" "}
-                    <span className='text-m font-light text-zinc-400'>
-                        {totalCorrectAnswers}
-                    </span>
-                </p>
+                <TotalStatsBlock totalStats={totalQuestionsAmount} />
+                <TotalStatsBlock totalStats={totalCorrectAnswers} />
             </div>
 
             <div className='flex justify-between'>
