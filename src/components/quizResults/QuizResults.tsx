@@ -5,14 +5,8 @@ import { clearQuizData, startQuiz } from "../../features/quizQuestionSlice";
 import { resetConfigQuiz } from "../../features/quizConfigSlice";
 import { ResultRow } from "../resultRow/ResultRow";
 import { paths } from "../../App";
-import {
-    setTotalQuestionsAmount,
-    setTotalCorrectAnswers,
-    setStatsByCategory,
-    setStatsByDifficulty,
-    setStatsByType,
-} from "../../features/statsSlice";
-
+import { incrementStats } from "../../features/statsSlice";
+import { StatisticType } from "../../features/statsSlice";
 const getTimeSpent = (startTime: number | null) => {
     if (!startTime) return "0:00";
     const timeSpent = Date.now() - startTime;
@@ -34,25 +28,26 @@ export const QuizResults: React.FC = () => {
     const navigate = useNavigate();
 
     const updateStats = () => {
-        dispatch(setTotalQuestionsAmount(+(numberOfQuestions ?? 0)));
-        dispatch(setTotalCorrectAnswers(correctAnswers));
         dispatch(
-            setStatsByCategory({
-                category: categoryText || "",
+            incrementStats({
+                type: StatisticType.Category,
+                key: categoryText || "",
                 amount: +(numberOfQuestions ?? 0),
                 correctAnswers: correctAnswers,
             })
         );
         dispatch(
-            setStatsByDifficulty({
-                difficulty: difficulty || "",
+            incrementStats({
+                type: StatisticType.Difficulty,
+                key: difficulty || "",
                 amount: +(numberOfQuestions ?? 0),
                 correctAnswers: correctAnswers,
             })
         );
         dispatch(
-            setStatsByType({
-                type: type || "",
+            incrementStats({
+                type: StatisticType.Type,
+                key: type || "",
                 amount: +(numberOfQuestions ?? 0),
                 correctAnswers: correctAnswers,
             })
