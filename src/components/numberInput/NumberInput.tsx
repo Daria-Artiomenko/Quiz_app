@@ -17,14 +17,12 @@ const NumberInput: React.FC<NumberInputProps> = ({
 }) => {
     return (
         <div>
-            <label
-                className='mr-3 text-zinc-400 font-light'
-                htmlFor={`input-${label}`}>
+            <label className='mr-3 text-zinc-400 font-light' htmlFor={label}>
                 {label}:
             </label>
             <input
                 className='h-9 w-24 rounded-md text-white border-2 border-zinc-400 focus:border-amber-500 focus:outline-none text-center bg-zinc-900'
-                id={`input-${label}`}
+                id={label}
                 type='number'
                 min={min}
                 max={max}

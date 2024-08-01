@@ -1,4 +1,3 @@
-import React from "react";
 import ButtonMain from "../../components/buttonMain/ButtonMain";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
@@ -6,6 +5,13 @@ import { clearQuizData, startQuiz } from "../../features/quizQuestionSlice";
 import { resetConfigQuiz } from "../../features/quizConfigSlice";
 import { ResultRow } from "../resultRow/ResultRow";
 import { paths } from "../../App";
+import {
+    setTotalQuestionsAmount,
+    setTotalCorrectAnswers,
+    setStatsByCategory,
+    setStatsByDifficulty,
+    setStatsByType,
+} from "../../features/statsSlice";
 
 const getTimeSpent = (startTime: number | null) => {
     if (!startTime) return "0:00";
@@ -27,12 +33,41 @@ export const QuizResults: React.FC = () => {
 
     const navigate = useNavigate();
 
+    const updateStats = () => {
+        dispatch(setTotalQuestionsAmount(+(numberOfQuestions ?? 0)));
+        dispatch(setTotalCorrectAnswers(correctAnswers));
+        dispatch(
+            setStatsByCategory({
+                category: categoryText || "",
+                amount: +(numberOfQuestions ?? 0),
+                correctAnswers: correctAnswers,
+            })
+        );
+        dispatch(
+            setStatsByDifficulty({
+                difficulty: difficulty || "",
+                amount: +(numberOfQuestions ?? 0),
+                correctAnswers: correctAnswers,
+            })
+        );
+        dispatch(
+            setStatsByType({
+                type: type || "",
+                amount: +(numberOfQuestions ?? 0),
+                correctAnswers: correctAnswers,
+            })
+        );
+    };
+
     const onRestart = () => {
+        updateStats();
         dispatch(clearQuizData());
         dispatch(startQuiz());
         navigate(paths.quiz);
     };
+
     const onChooseAnother = () => {
+        updateStats();
         dispatch(resetConfigQuiz());
         dispatch(clearQuizData());
         navigate(paths.quizConfig);

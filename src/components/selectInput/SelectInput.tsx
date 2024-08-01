@@ -23,7 +23,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
         <div className='my-4 text-left'>
             <label
                 className='text-s text-left text-zinc-400 font-light'
-                htmlFor={`select-${label}`}>
+                htmlFor={label}>
                 {label}:
             </label>
             <Select
@@ -37,7 +37,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
                         primary: "orange",
                     },
                 })}
-                id={`select-${label}`}
+                id={label}
                 options={options}
                 value={value}
                 onChange={(option: Option | null) => onChange(option)}
