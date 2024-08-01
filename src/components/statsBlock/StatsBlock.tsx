@@ -16,15 +16,15 @@ export const StatsBlock: React.FC<StatsBlockProps> = ({
     return (
         <div>
             <h3 className='text-xl font-light text-amber-500 mb-8'>{label}:</h3>
-            <div className='text-m font-light text-zinc-200 flex flex-col align-start text-start'>
+            <div className='text-m font-light text-zinc-200 flex flex-col gap-4 align-start text-start'>
                 {Object.entries(statsData).map(([key, value]) => (
-                    <p className='mb-4' key={key}>
-                        {key}:<br />
+                    <p className='flex flex-col' key={key}>
+                        {key}:
                         <span className='text-m font-light text-zinc-400'>
                             Total questions: {value}
-                            <br />
+                        </span>
+                        <span className='text-m font-light text-zinc-400'>
                             Correct answers: {correctAnswers[key]}
-                            <br />
                         </span>
                     </p>
                 ))}
