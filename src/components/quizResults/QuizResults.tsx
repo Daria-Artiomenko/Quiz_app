@@ -1,4 +1,3 @@
-import React from "react";
 import ButtonMain from "../../components/buttonMain/ButtonMain";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
@@ -6,7 +5,8 @@ import { clearQuizData, startQuiz } from "../../features/quizQuestionSlice";
 import { resetConfigQuiz } from "../../features/quizConfigSlice";
 import { ResultRow } from "../resultRow/ResultRow";
 import { paths } from "../../App";
-
+import { incrementStats } from "../../features/statsSlice";
+import { StatisticType } from "../../features/statsSlice";
 const getTimeSpent = (startTime: number | null) => {
     if (!startTime) return "0:00";
     const timeSpent = Date.now() - startTime;
@@ -27,12 +27,42 @@ export const QuizResults: React.FC = () => {
 
     const navigate = useNavigate();
 
+    const updateStats = () => {
+        dispatch(
+            incrementStats({
+                type: StatisticType.Category,
+                key: categoryText || "",
+                amount: +(numberOfQuestions ?? 0),
+                correctAnswers: correctAnswers,
+            })
+        );
+        dispatch(
+            incrementStats({
+                type: StatisticType.Difficulty,
+                key: difficulty || "",
+                amount: +(numberOfQuestions ?? 0),
+                correctAnswers: correctAnswers,
+            })
+        );
+        dispatch(
+            incrementStats({
+                type: StatisticType.Type,
+                key: type || "",
+                amount: +(numberOfQuestions ?? 0),
+                correctAnswers: correctAnswers,
+            })
+        );
+    };
+
     const onRestart = () => {
+        updateStats();
         dispatch(clearQuizData());
         dispatch(startQuiz());
         navigate(paths.quiz);
     };
+
     const onChooseAnother = () => {
+        updateStats();
         dispatch(resetConfigQuiz());
         dispatch(clearQuizData());
         navigate(paths.quizConfig);

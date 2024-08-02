@@ -23,9 +23,10 @@ const AnswerOptions: React.FC<AnswerOptionsProps> = ({
                 <div
                     key={answer}
                     className='text-xl font-light text-zinc-400 text-start'>
-                    <label>
+                    <label htmlFor={answer}>
                         <input
-                            className='mr-2 w-4 h-4 rounded-md'
+                            id={answer}
+                            className='mr-2 w-4 h-4 rounded-md accent-amber-500'
                             type={type === "multiple" ? "checkbox" : "radio"}
                             checked={userAnswer === answer}
                             onChange={() => handleAnswerSelect(answer)}
