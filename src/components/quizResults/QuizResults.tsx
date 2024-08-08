@@ -1,12 +1,12 @@
-import ButtonMain from "../../components/buttonMain/ButtonMain";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import ButtonMain from "../../components/buttonMain/ButtonMain";
 import { clearQuizData, startQuiz } from "../../features/quizQuestionSlice";
 import { resetConfigQuiz } from "../../features/quizConfigSlice";
+import { incrementStats, StatisticType } from "../../features/statsSlice";
 import { ResultRow } from "../resultRow/ResultRow";
 import { paths } from "../../App";
-import { incrementStats } from "../../features/statsSlice";
-import { StatisticType } from "../../features/statsSlice";
+
 const getTimeSpent = (startTime: number | null) => {
     if (!startTime) return "0:00";
     const timeSpent = Date.now() - startTime;

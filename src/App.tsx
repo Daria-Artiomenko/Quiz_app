@@ -1,10 +1,26 @@
 import { QuizConfigPage } from "./pages/quizConfigPage/QuizConfigPage";
-import { QuizQuestionPage } from "./pages/quizQuestionPage/QuizQuestionPage";
-import { QuizResultsPage } from "./pages/quizResultsPage/QuizResultsPage";
-import { StatisticPage } from "./pages/statisticPage/StatisticPage";
+// import { QuizQuestionPage } from "./pages/quizQuestionPage/QuizQuestionPage";
+// import { QuizResultsPage } from "./pages/quizResultsPage/QuizResultsPage";
+// import { StatisticPage } from "./pages/statisticPage/StatisticPage";
 import { Routes, Route } from "react-router-dom";
+import { lazy, Suspense } from "react";
 import "./App.css";
-
+import LoadingAnimation from "./components/loadingAnimation/LoadingAnimation";
+const QuizQuestionPage = lazy(() =>
+    import("./pages/quizQuestionPage/QuizQuestionPage").then((module) => ({
+        default: module.QuizQuestionPage,
+    }))
+);
+const QuizResultsPage = lazy(() =>
+    import("./pages/quizResultsPage/QuizResultsPage").then((module) => ({
+        default: module.QuizResultsPage,
+    }))
+);
+const StatisticPage = lazy(() =>
+    import("./pages/statisticPage/StatisticPage").then((module) => ({
+        default: module.StatisticPage,
+    }))
+);
 export const paths = {
     quizConfig: "/",
     statistic: "/statistic",
@@ -14,12 +30,17 @@ export const paths = {
 function App() {
     return (
         <>
-            <Routes>
-                <Route path={paths.statistic} element={<StatisticPage />} />
-                <Route path={paths.results} element={<QuizResultsPage />} />
-                <Route path={paths.quiz} element={<QuizQuestionPage />} />
-                <Route path={paths.quizConfig} element={<QuizConfigPage />} />
-            </Routes>
+            <Suspense fallback={<LoadingAnimation />}>
+                <Routes>
+                    <Route path={paths.statistic} element={<StatisticPage />} />
+                    <Route path={paths.results} element={<QuizResultsPage />} />
+                    <Route path={paths.quiz} element={<QuizQuestionPage />} />
+                    <Route
+                        path={paths.quizConfig}
+                        element={<QuizConfigPage />}
+                    />
+                </Routes>
+            </Suspense>
         </>
     );
 }
