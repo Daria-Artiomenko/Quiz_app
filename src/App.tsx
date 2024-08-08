@@ -1,8 +1,7 @@
 import { QuizConfigPage } from "./pages/quizConfigPage/QuizConfigPage";
 import { Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
-import "./App.css";
-import LoadingAnimation from "./components/loadingAnimation/LoadingAnimation";
+import { LoadingAnimation } from "./components/loadingAnimation/LoadingAnimation";
 const QuizQuestionPage = lazy(() =>
     import("./pages/quizQuestionPage/QuizQuestionPage").then((module) => ({
         default: module.QuizQuestionPage,
@@ -18,6 +17,9 @@ const StatisticPage = lazy(() =>
         default: module.StatisticPage,
     }))
 );
+
+import "./App.css";
+
 export const paths = {
     quizConfig: "/",
     statistic: "/statistic",

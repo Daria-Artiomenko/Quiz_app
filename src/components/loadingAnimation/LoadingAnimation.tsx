@@ -1,29 +1,6 @@
 import { motion } from "framer-motion";
-
-const LoadingAnimation: React.FC = () => {
-    const containerVariants = {
-        animate: {
-            transition: {
-                staggerChildren: 0.1,
-            },
-        },
-    };
-
-    const dotVariants = {
-        initial: {
-            y: "0%",
-        },
-        animate: {
-            y: "100%",
-            transition: {
-                repeat: Infinity,
-                duration: 0.5,
-                ease: "easeInOut",
-                repeatType: "mirror" as const,
-            },
-        },
-    };
-
+import { containerVariants, dotVariants } from "../../constants/animation";
+export const LoadingAnimation: React.FC = () => {
     return (
         <motion.div
             className='flex items-center justify-center h-screen'
@@ -45,5 +22,3 @@ const LoadingAnimation: React.FC = () => {
         </motion.div>
     );
 };
-
-export default LoadingAnimation;
