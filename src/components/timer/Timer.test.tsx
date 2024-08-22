@@ -19,7 +19,6 @@ describe("Timer", () => {
         expect(onTimeUp).not.toHaveBeenCalled();
     });
     it("handles zero time correctly", () => {
-        const onTimeUp = jest.fn();
         const { getByText } = setup({ time: 0 });
         expect(getByText("Time:")).toBeInTheDocument();
         expect(getByText("00:00")).toBeInTheDocument();
