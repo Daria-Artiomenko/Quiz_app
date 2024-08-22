@@ -7,7 +7,7 @@ import { incrementStats, StatisticType } from "../../features/statsSlice";
 import { ResultRow } from "../resultRow/ResultRow";
 import { paths } from "../../App";
 
-const getTimeSpent = (startTime: number | null) => {
+export const getTimeSpent = (startTime: number | null) => {
     if (!startTime) return "0:00";
     const timeSpent = Date.now() - startTime;
     const minutes = Math.floor(timeSpent / 60000);
