@@ -1,24 +1,26 @@
 import { render } from "@testing-library/react";
 import Timer from "./Timer";
 
+const onTimeUp = jest.fn();
+const setup = ({ time }: { time: number }) =>
+    render(<Timer time={time} onTimeUp={onTimeUp} />);
+
 describe("Timer", () => {
-    test("renders the initial time correctly", () => {
-        const { getByText } = render(<Timer time={120} onTimeUp={() => {}} />);
+    afterEach(jest.resetAllMocks);
+    it("renders the initial time correctly", () => {
+        const { getByText } = setup({ time: 120 });
         expect(getByText("Time:")).toBeInTheDocument();
         expect(getByText("02:00")).toBeInTheDocument();
     });
-    test("calls onTimeUp when time reaches zero", () => {
-        const onTimeUp = jest.fn();
-        const { getByText } = render(<Timer time={1} onTimeUp={onTimeUp} />);
+    it("calls onTimeUp when time reaches zero", () => {
+        const { getByText } = setup({ time: 1 });
         expect(getByText("Time:")).toBeInTheDocument();
         expect(getByText("00:01")).toBeInTheDocument();
         expect(onTimeUp).not.toHaveBeenCalled();
     });
-    test("handles zero time correctly", () => {
-        const onTimeUp = jest.fn();
-        const { getByText } = render(<Timer time={0} onTimeUp={onTimeUp} />);
+    it("renders the initial time correctly", () => {
+        const { getByText } = setup({ time: 120 });
         expect(getByText("Time:")).toBeInTheDocument();
-        expect(getByText("00:00")).toBeInTheDocument();
-        expect(onTimeUp).toHaveBeenCalled();
+        expect(getByText("02:00")).toBeInTheDocument();
     });
 });

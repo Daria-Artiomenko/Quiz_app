@@ -9,7 +9,7 @@ describe("AnswerOptions", () => {
         mockOnAnswerSelect.mockClear();
     });
 
-    test("renders the correct number of answer options", () => {
+    it("renders the correct number of answer options", () => {
         const { getAllByRole } = render(
             <AnswerOptions
                 type='multiple'
@@ -22,7 +22,7 @@ describe("AnswerOptions", () => {
         expect(options).toHaveLength(mockAnswers.length);
     });
 
-    test("calls onAnswerSelect with the correct answer when an option is selected (multiple choice)", () => {
+    it("calls onAnswerSelect with the correct answer when an option is selected (multiple choice)", () => {
         const { getAllByRole } = render(
             <AnswerOptions
                 type='multiple'
@@ -36,7 +36,7 @@ describe("AnswerOptions", () => {
         expect(mockOnAnswerSelect).toHaveBeenCalledWith(mockAnswers[1]);
     });
 
-    test("calls onAnswerSelect with the correct answer when an option is selected (boolean)", () => {
+    it("calls onAnswerSelect with the correct answer when an option is selected (boolean)", () => {
         const { getAllByRole } = render(
             <AnswerOptions
                 type='boolean'
@@ -50,7 +50,7 @@ describe("AnswerOptions", () => {
         expect(mockOnAnswerSelect).toHaveBeenCalledWith(mockAnswers[2]);
     });
 
-    test("renders the correct checked state for the user-selected answer (multiple choice)", () => {
+    it("renders the correct checked state for the user-selected answer (multiple choice)", () => {
         const { getAllByRole } = render(
             <AnswerOptions
                 type='multiple'
@@ -65,7 +65,7 @@ describe("AnswerOptions", () => {
         expect(options[2]).not.toBeChecked();
     });
 
-    test("renders the correct checked state for the user-selected answer (boolean)", () => {
+    it("renders the correct checked state for the user-selected answer (boolean)", () => {
         const { getAllByRole } = render(
             <AnswerOptions
                 type='boolean'
