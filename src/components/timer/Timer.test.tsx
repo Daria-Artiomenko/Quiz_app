@@ -18,9 +18,11 @@ describe("Timer", () => {
         expect(getByText("00:01")).toBeInTheDocument();
         expect(onTimeUp).not.toHaveBeenCalled();
     });
-    it("renders the initial time correctly", () => {
-        const { getByText } = setup({ time: 120 });
+    it("handles zero time correctly", () => {
+        const onTimeUp = jest.fn();
+        const { getByText } = setup({ time: 0 });
         expect(getByText("Time:")).toBeInTheDocument();
-        expect(getByText("02:00")).toBeInTheDocument();
+        expect(getByText("00:00")).toBeInTheDocument();
+        expect(onTimeUp).toHaveBeenCalled();
     });
 });
